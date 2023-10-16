@@ -1,3 +1,5 @@
+# Diberikan sebuah string acak, hitunglah berapa jumlah setiap karakter yang ada dalam string
+# tersebut
 def count_characters(input_string):
     char_count = {}
     for char in input_string:
