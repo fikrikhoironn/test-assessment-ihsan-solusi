@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -60,6 +61,16 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="w-full">
+      <div className="flex items-center py-4">
+        <Input
+          placeholder="Filter Nama..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("name")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm h-8"
+        />
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -104,7 +115,6 @@ export function DataTable<TData, TValue>({
                   className="h-24 text-center"
                 >
                   No results.
-                  {JSON.stringify(table.getRowModel())}
                 </TableCell>
               </TableRow>
             )}
