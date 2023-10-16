@@ -1,3 +1,9 @@
+# Diberikan sebuah string yang dapat mengandung huruf, angka, spasi dan tanda baca.
+# ○ Ubahlah format string tersebut menjadi format penulisan judul yang hanya menerima
+# huruf dan angka
+# ○ Ubahlah format string tersebut menjadi format penulisan biasa dengan mengkonversi
+# spasi menjadi “-“ (strip)
+
 def title_format(input_string):
     cleaned_string = ''.join(char for char in input_string if char.isalnum() or char.isspace())
     title_string = cleaned_string.title()
