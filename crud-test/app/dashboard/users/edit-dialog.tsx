@@ -25,7 +25,7 @@ import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useMutation, useQueryClient, useQuery } from "react-query";
-import axios from "axios";
+import axios from "@/lib/axios";
 import { toast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
 import React from "react";
@@ -51,12 +51,7 @@ export default function EditDialog({ userId, open, onOpenChange }: Props) {
   const { data, isLoading: readLoading, error: readError } = useQuery({
     queryKey: ["user", userId],
     queryFn: async () => {
-      const { data } = await axios.get(`https://cms-admin-v2.ihsansolusi.co.id/testapi/user/${userId}`, {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTc2MTY3MzksImlhdCI6MTY5NzUzMDMzOSwic3ViIjoyOTd9._RDCUiTtcfjX8MkQm4NV_wTdXNR0Qics-1oaXhSor8c',
-        },
-      });
+      const { data } = await axios.get('/testapi/user/' + userId)
       return data.data;
     }
   });
@@ -73,12 +68,7 @@ export default function EditDialog({ userId, open, onOpenChange }: Props) {
 
   const { mutate: submit, isLoading } = useMutation({
     mutationFn: async (values: z.infer<typeof schema>) => {
-      const { data } = await axios.put(`https://cms-admin-v2.ihsansolusi.co.id/testapi/user/${userId}`, values, {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTc2MTY3MzksImlhdCI6MTY5NzUzMDMzOSwic3ViIjoyOTd9._RDCUiTtcfjX8MkQm4NV_wTdXNR0Qics-1oaXhSor8c',
-        },
-      });
+      const { data } = await axios.put('/testapi/user/' + userId, values)
       return data.data;
     },
     onSuccess: () => {
@@ -202,6 +192,10 @@ export default function EditDialog({ userId, open, onOpenChange }: Props) {
             </div>
             <div className="flex-grow">
               <DialogFooter>
+                <Button type="button" variant={"outline"} className="mr-4 w-36"
+                  onClick={() => {
+                    form.reset();
+                  }}>Reset</Button>
                 <Button type="submit" className="w-36" disabled={isLoading}>
                   {isLoading ? <Loader2 className="h-6 w-6 animate-spin" /> : "Simpan"}
                 </Button>

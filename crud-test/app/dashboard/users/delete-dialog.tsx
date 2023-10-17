@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
+import axios from "@/lib/axios";
 import { useMutation } from "react-query";
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from "next/navigation";
@@ -28,12 +28,7 @@ export function DeleteDialog({
 
   const { mutate: submit, isLoading } = useMutation({
     mutationFn: async () => {
-      const { data, } = await axios.delete(`https://cms-admin-v2.ihsansolusi.co.id/testapi/user/${userId}`, {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTc2MTY3MzksImlhdCI6MTY5NzUzMDMzOSwic3ViIjoyOTd9._RDCUiTtcfjX8MkQm4NV_wTdXNR0Qics-1oaXhSor8c',
-        },
-      });
+      const { data, } = await axios.delete('/testapi/user/' + userId)
       return data.data;
     },
     onSuccess: () => {
