@@ -23,13 +23,11 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
-import { DateTime } from "luxon";
-
+import { Loader2 } from "lucide-react";
 
 interface Props {
   open?: boolean;
@@ -188,8 +186,8 @@ export default function AddDialog({ open, onOpenChange }: Props) {
             </div>
             <div className="flex-grow">
               <DialogFooter>
-                <Button type="submit" className="w-36">
-                  Save
+                <Button type="submit" className="w-36" disabled={isLoading}>
+                  {isLoading ? <Loader2 className="h-6 w-6 animate-spin" /> : "Simpan"}
                 </Button>
               </DialogFooter>
             </div>
