@@ -25,7 +25,7 @@ import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useMutation, useQueryClient } from "react-query";
-import axios from "axios";
+import axios from "@/lib/axios";
 import { toast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
 
@@ -52,17 +52,8 @@ export default function AddDialog({ open, onOpenChange }: Props) {
 
   const { mutate: submit, isLoading } = useMutation({
     mutationFn: async (values: z.infer<typeof schema>) => {
-      try {
-        const { data } = await axios.post('https://cms-admin-v2.ihsansolusi.co.id/testapi/user', values, {
-          headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTc2MTY3MzksImlhdCI6MTY5NzUzMDMzOSwic3ViIjoyOTd9._RDCUiTtcfjX8MkQm4NV_wTdXNR0Qics-1oaXhSor8c',
-          },
-        });
-        return data.data;
-      } catch (error) {
-        console.error('An error occurred while fetching the data:', error);
-      }
+      const { data } = await axios.post('/testapi/user', values);
+      return data.data;
     },
     onSuccess: () => {
       toast({

@@ -73,17 +73,13 @@ export default function EditDialog({ userId, open, onOpenChange }: Props) {
 
   const { mutate: submit, isLoading } = useMutation({
     mutationFn: async (values: z.infer<typeof schema>) => {
-      try {
-        const { data } = await axios.put(`https://cms-admin-v2.ihsansolusi.co.id/testapi/user/${userId}`, values, {
-          headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTc2MTY3MzksImlhdCI6MTY5NzUzMDMzOSwic3ViIjoyOTd9._RDCUiTtcfjX8MkQm4NV_wTdXNR0Qics-1oaXhSor8c',
-          },
-        });
-        return data.data;
-      } catch (error) {
-        console.error('An error occurred while fetching the data:', error);
-      }
+      const { data } = await axios.put(`https://cms-admin-v2.ihsansolusi.co.id/testapi/user/${userId}`, values, {
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTc2MTY3MzksImlhdCI6MTY5NzUzMDMzOSwic3ViIjoyOTd9._RDCUiTtcfjX8MkQm4NV_wTdXNR0Qics-1oaXhSor8c',
+        },
+      });
+      return data.data;
     },
     onSuccess: () => {
       toast({

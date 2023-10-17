@@ -28,17 +28,13 @@ export function DeleteDialog({
 
   const { mutate: submit, isLoading } = useMutation({
     mutationFn: async () => {
-      try {
-        const { data, } = await axios.delete(`https://cms-admin-v2.ihsansolusi.co.id/testapi/user/${userId}`, {
-          headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTc2MTY3MzksImlhdCI6MTY5NzUzMDMzOSwic3ViIjoyOTd9._RDCUiTtcfjX8MkQm4NV_wTdXNR0Qics-1oaXhSor8c',
-          },
-        });
-        return data.data;
-      } catch (error) {
-        console.error('An error occurred while fetching the data:', error);
-      }
+      const { data, } = await axios.delete(`https://cms-admin-v2.ihsansolusi.co.id/testapi/user/${userId}`, {
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTc2MTY3MzksImlhdCI6MTY5NzUzMDMzOSwic3ViIjoyOTd9._RDCUiTtcfjX8MkQm4NV_wTdXNR0Qics-1oaXhSor8c',
+        },
+      });
+      return data.data;
     },
     onSuccess: () => {
       toast({
