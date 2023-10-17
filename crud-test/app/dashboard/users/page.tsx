@@ -8,6 +8,7 @@ export default async function Page() {
       return data.data;
     } catch (error) {
       console.error('An error occurred while fetching the data:', error);
+      return [];
     }
   }
   const users = await getUsers();
