@@ -1,4 +1,3 @@
-`use client`
 import axios from 'axios'
 import { DataTable } from './data-table';
 import { columns } from "./columns";
