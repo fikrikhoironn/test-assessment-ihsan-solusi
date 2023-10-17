@@ -20,7 +20,7 @@ export default async function Page() {
   }
   const users = await getUsers();
   return (
-    <div className="bg-white p-8">
+    <div className="bg-white h-full p-8">
       <DataTable columns={columns} data={users} />
     </div>
   )
