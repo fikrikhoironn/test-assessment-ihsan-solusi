@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Project Setup Guide
 
-## Getting Started
+Follow the steps below to set up the project locally.
 
-First, run the development server:
+## Step 1: Create an Account
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Visit [Ihsan Solusi Admin CMS](https://cms-admin-v2.ihsansolusi.co.id/docs#/)
+2. Create an account by signing up.
+3. Login to your account after confirmation.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Step 2: Get the Authorization Token
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. After logging in, you will receive an authorization token.
+2. Copy the authorization token for the next step.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Step 3: Set Up the Project Locally
 
-## Learn More
+1. Clone the project repository to your local machine.
+2. Navigate to the project directory.
 
-To learn more about Next.js, take a look at the following resources:
+## Step 4: Configure Environment Variable
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Create a file named `.env` in the root directory of the project.
+2. Inside the `.env` file, add the following line:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+   ```plaintext
+   NEXT_PUBLIC_AUTH_TOKEN=your_authorization_token_here
 
-## Deploy on Vercel
+## Step 5: Run the Project
+1. Run the following command to install the dependencies:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   npm install
+   ```
+2. Run the following command to start the development server:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   ```bash
+    npm run dev
+    ```
+3. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
