@@ -38,6 +38,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ViewDialog } from "./view-dialog";
+import { DeleteDialog } from "./delete-dialog";
 
 export const columns = <TData, TValue = any>(
   onRowClick: (id: number, action: string) => void
@@ -192,8 +193,6 @@ export function DataTable<TData, TValue>({
     },
   });
 
-
-
   return (
     <div className="w-full">
       <QueryClientProvider client={queryClient}>
@@ -209,6 +208,17 @@ export function DataTable<TData, TValue>({
         )}
         {selectedRowView && actionType === 'view' && (
           <ViewDialog
+            userId={selectedRowView}
+            open={!!selectedRowView}
+            onOpenChange={(selectedRowView) => {
+              if (selectedRowView) return;
+              setSelectedRowView(null);
+              router.refresh();
+            }}
+          />)
+        }
+        {selectedRowView && actionType === 'delete' && (
+          <DeleteDialog
             userId={selectedRowView}
             open={!!selectedRowView}
             onOpenChange={(selectedRowView) => {
