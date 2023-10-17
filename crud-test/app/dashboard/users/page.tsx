@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { DataTable } from './data-table';
-import { columns } from "./columns";
 
 export default async function Page() {
   async function getUsers() {
@@ -20,7 +19,7 @@ export default async function Page() {
   const users = await getUsers();
   return (
     <div className="bg-white h-full p-8">
-      <DataTable columns={columns} data={users} />
+      <DataTable data={users} />
     </div>
   )
 }
