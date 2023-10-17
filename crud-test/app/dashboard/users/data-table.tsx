@@ -108,7 +108,7 @@ export const columns = <TData, TValue = any>(
     },
     {
       accessorKey: "born_date",
-      header: "Born Date",
+      header: "Tanggal Lahir",
       cell: ({ row }) => {
         const bornDate = row.getValue("born_date") as string;
         const date = DateTime.fromISO(bornDate, { zone: 'UTC' });
