@@ -39,6 +39,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { ViewDialog } from "./view-dialog";
 import { DeleteDialog } from "./delete-dialog";
+import EditDialog from "./edit-dialog";
 
 export const columns = <TData, TValue = any>(
   onRowClick: (id: number, action: string) => void
@@ -219,6 +220,17 @@ export function DataTable<TData, TValue>({
         }
         {selectedRowView && actionType === 'delete' && (
           <DeleteDialog
+            userId={selectedRowView}
+            open={!!selectedRowView}
+            onOpenChange={(selectedRowView) => {
+              if (selectedRowView) return;
+              setSelectedRowView(null);
+              router.refresh();
+            }}
+          />)
+        }
+        {selectedRowView && actionType === 'edit' && (
+          <EditDialog
             userId={selectedRowView}
             open={!!selectedRowView}
             onOpenChange={(selectedRowView) => {

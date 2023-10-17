@@ -24,12 +24,14 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient, useQuery } from "react-query";
 import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
+import React from "react";
 
 interface Props {
+  userId: number;
   open?: boolean;
   onOpenChange: (open: boolean) => void;
   onClose?: () => void;
@@ -43,17 +45,36 @@ const schema = z.object({
 }
 )
 
-export default function AddDialog({ open, onOpenChange }: Props) {
+export default function EditDialog({ userId, open, onOpenChange }: Props) {
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const { data, isLoading: readLoading, error: readError } = useQuery({
+    queryKey: ["user", userId],
+    queryFn: async () => {
+      const { data } = await axios.get(`https://cms-admin-v2.ihsansolusi.co.id/testapi/user/${userId}`, {
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTc2MTY3MzksImlhdCI6MTY5NzUzMDMzOSwic3ViIjoyOTd9._RDCUiTtcfjX8MkQm4NV_wTdXNR0Qics-1oaXhSor8c',
+        },
+      });
+      return data.data;
+    }
+  });
+
   const form = useForm({
     resolver: zodResolver(schema),
   });
-  const queryClient = useQueryClient();
+
+  React.useEffect(() => {
+    if (data) {
+      form.reset(data);
+    }
+  }, [data, form]);
 
   const { mutate: submit, isLoading } = useMutation({
     mutationFn: async (values: z.infer<typeof schema>) => {
       try {
-        const { data } = await axios.post('https://cms-admin-v2.ihsansolusi.co.id/testapi/user', values, {
+        const { data } = await axios.put(`https://cms-admin-v2.ihsansolusi.co.id/testapi/user/${userId}`, values, {
           headers: {
             'Accept': 'application/json',
             'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTc2MTY3MzksImlhdCI6MTY5NzUzMDMzOSwic3ViIjoyOTd9._RDCUiTtcfjX8MkQm4NV_wTdXNR0Qics-1oaXhSor8c',
@@ -66,7 +87,7 @@ export default function AddDialog({ open, onOpenChange }: Props) {
     },
     onSuccess: () => {
       toast({
-        title: "Berhasil menambahkan customer baru",
+        title: "Berhasil mengupdate data customer",
         variant: "default",
       });
       router.refresh();
@@ -74,7 +95,7 @@ export default function AddDialog({ open, onOpenChange }: Props) {
     },
     onError: (error) => {
       toast({
-        title: "Gagal menambahkan customer baru",
+        title: "Gagal mengupdate data customer",
         variant: "destructive",
         description: JSON.stringify(error),
       });
@@ -87,7 +108,7 @@ export default function AddDialog({ open, onOpenChange }: Props) {
       <Toaster />
       <DialogContent className="flex max-w-screen-md flex-col justify-end">
         <DialogHeader className="flex flex-row items-center justify-between">
-          <DialogTitle>Tambahkan Customer Baru</DialogTitle>
+          <DialogTitle>Edit Data Customer</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -139,12 +160,11 @@ export default function AddDialog({ open, onOpenChange }: Props) {
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
                         className="flex flex-col space-y-1"
                       >
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="l" />
+                            <RadioGroupItem value="l" checked={field.value === 'l'} />
                           </FormControl>
                           <FormLabel className="font-normal">
                             Laki-laki
@@ -152,7 +172,7 @@ export default function AddDialog({ open, onOpenChange }: Props) {
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="p" />
+                            <RadioGroupItem value="p" checked={field.value === 'p'} />
                           </FormControl>
                           <FormLabel className="font-normal">
                             Perempuan
@@ -175,6 +195,7 @@ export default function AddDialog({ open, onOpenChange }: Props) {
                       <FormControl>
                         <Input
                           type="date"
+                          value={field.value}
                           {...restField}
                         />
                       </FormControl>
