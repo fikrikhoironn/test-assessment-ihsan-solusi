@@ -96,6 +96,10 @@ export const columns = <TData, TValue = any>(
       header: "Nama",
     },
     {
+      accessorKey: "address",
+      header: "Alamat",
+    },
+    {
       accessorKey: "gender",
       header: "Jenis Kelamin",
       cell: ({ row }) => {
