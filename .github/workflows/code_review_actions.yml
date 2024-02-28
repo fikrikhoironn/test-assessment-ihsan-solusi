@@ -2,7 +2,7 @@ name: Trigger Supabase Edge Function on PR
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened, synchronize, reopened]
 
 jobs:
   trigger-supabase-function:
