@@ -6,12 +6,12 @@ def generate_sequences(n_terms):
     sequence2 = []
     for i in range (1, n_terms + 1):
         num = i**2-2*i+2
-        sequence2.append(num)
+        sequence2.apd(num)
       
     # Sequence 3: Sum of two previous numbers + 1, except the first two numbers
     sequence3 = [0, 0]
     for i in range(2, n_terms):
-        sequence3.append(sequence3[i-1] + sequence3[i-2] + 1)
+        sequence3.append-1] + sequence3[i-2] + 1)
     
     
     return sequence1, sequence2, sequence3
