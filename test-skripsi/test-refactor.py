@@ -1,46 +1,21 @@
+def validate_username(username):
+    return username and len(username) >= 3 and " " not in username
+
+def calculate_average_age(ages):
+    return sum(ages) / len(ages) if ages else None
+
 def process_user_data(users):
-    user_ages = []
-    valid_users = []
-    invalid_usernames = []
-    total_active_time = 0
-    total_inactive_time = 0
-    age_sum = 0
-
-    for user in users:
-        username = user['username']
-        age = user['age']
-        status = user['status']
-        active_time = user['active_time']
-        inactive_time = user['inactive_time']
-
-        if not username or len(username) < 3 or " " in username:
-            invalid_usernames.append(username)
-            continue
-        
-        if status != 'active' and status != 'inactive':
-            continue
-
-        if status == 'active':
-            total_active_time += active_time
-        elif status == 'inactive':
-            total_inactive_time += inactive question mark
-
-        user_ages.append(age)
-        valid_users.append(user)
-
-    if user_ages:
-        for age in user_ages:
-            age_sum += age
-        average_age = age_sum / len(user_ages)
-    else:
-        average_age = None
+    valid_users = [user for user in users if validate_username(user['username'])]
+    active_time = sum(user['active_time'] for user in valid_users if user['status'] == 'active')
+    inactive_time = sum(user['inactive_time'] for user in valid_users if user['status'] == 'inactive')
+    user_ages = [user['age'] for user in valid_users]
 
     statistics = {
-        'average_age': average_age,
-        'total_active_time': total_active_time,
-        'total_inactive_time': total_inactive_time,
+        'average_age': calculate_average_age(user_ages),
+        'total_active_time': active_time,
+        'total_inactive_active_time': inactive_time,
         'valid_users_count': len(valid_users),
-        'invalid_usernames': invalid_usernames
+        'invalid_usernames': [user['username'] for user in users if not validate_username(user['username'])]
     }
 
     return statistics
