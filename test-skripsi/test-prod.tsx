@@ -1,5 +1,12 @@
+class InventoryError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = "InventoryError";
+	}
+}
+
 interface Product {
-	id: number;
+	readonly id: number;
 	name: string;
 	price: number;
 	quantity: number;
@@ -10,27 +17,33 @@ class InventoryManager {
 
 	constructor() {
 		this.inventory = [];
+		this.loadInventory();
 	}
 
-	addProduct(product: Product) {
-		const index = this.inventory.findIndex((p) => p.id === product.id);
-		if (index !== -1) {
-			console.log("Product already exists.");
-			return;
+	private findProductById(productId: number): Product | undefined {
+		return this.inventory.find((p) => p.id === productId);
+	}
+
+	addProduct(product: Product): boolean {
+		if (this.findProductById(product.id)) {
+			throw new InventoryError("Product already exists.");
 		}
 		this.inventory.push(product);
+		this.saveInventory();
+		return true;
 	}
 
-	updateProduct(productId: number, newQuantity: number) {
-		const product = this.inventory.find((p) => p.id === productId);
+	updateProduct(productId: number, changes: Partial<Product>): boolean {
+		const product = this.findProductById(productId);
 		if (!product) {
-			console.log("Product not found.");
-			return;
+			throw new InventoryError("Product not found.");
 		}
-		product.quantity = newQuantity;
+		Object.assign(product, changes);
+		this.saveInventory();
+		return true;
 	}
 
-	listProducts() {
+	listProducts(): void {
 		console.log("Listing all products:");
 		this.inventory.forEach((product) => {
 			console.log(
@@ -39,16 +52,28 @@ class InventoryManager {
 		});
 	}
 
-	sellProduct(productId: number, amount: number) {
-		const product = this.inventory.find((p) => p.id === productId);
+	sellProduct(productId: number, amount: number): boolean {
+		const product = this.findProductById(productId);
 		if (!product) {
-			console.log("Product not found.");
-			return;
+			throw new InventoryError("Product not found.");
 		}
 		if (product.quantity < amount) {
-			console.log("Not enough inventory.");
-			return;
+			throw new InventoryError("Not enough inventory.");
 		}
 		product.quantity -= amount;
+		this.saveInventory();
+		return true;
+	}
+
+	saveInventory(): void {
+		const data = JSON.stringify(this.inventory);
+		localStorage.setItem("inventory", data);
+	}
+
+	loadInventory(): void {
+		const data = localStorage.getItem("inventory");
+		if (data) {
+			this.inventory = JSON.parse(data);
+		}
 	}
 }
